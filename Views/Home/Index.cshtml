@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var deal in Model.OrderByDescending(d => d.Price))
+                    @foreach (var deal in Model)
         {
                         <tr  @((Model.Where(d => d.Vehicle.Equals(deal.Vehicle)).Count() > 1) ? "class=table-success" : "")>
                             <td>@deal.DealNumber</td>
