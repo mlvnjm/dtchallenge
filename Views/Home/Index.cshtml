@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model IEnumerable<Deal>
+
+    <div class="text-center">
+
+        @if (Model.Count() == 0)
+        {
+            <p>No data available to display. Please upload a data file.</p>
+        }
+        else
+        {
+            <div class="table-success" style="width:100px; margin-bottom:20px">Most popular</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Deal Number</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Vehicle</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var deal in Model.OrderByDescending(d => d.Price))
+        {
+                        <tr  @((Model.Where(d => d.Vehicle.Equals(deal.Vehicle)).Count() > 1) ? "class=table-success" : "")>
+                            <td>@deal.DealNumber</td>
+                            <td>@deal.CustomerName</td>
+                            <td>@deal.Vehicle</td>
+                            <td>@deal.Price.FormatPriceToDisplay()</td>
+                            <td>@deal.Date.FormatDateToDisplay()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Upload">
+            <div class="form-group">
+                <div class="col-md-10">
+                    Upload sale data csv file:
+                    <input type="file" name="file">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload">
+                </div>
+            </div>
+        </form>
+    </div>
